@@ -12,6 +12,4 @@ ExtensionManagementUtility::addPlugin(
         value: 'oidc_login',
         icon: 'ext-oidc-icon'
     ),
-    'CType',
-    'oidc'
 );
