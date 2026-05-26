@@ -32,7 +32,6 @@ use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -151,7 +150,7 @@ class OAuthService
         );
 
         if ($result->getStatusCode() < 300 || $result->getStatusCode() >= 400) {
-            throw new RuntimeException('Request failed', 1510049345);
+            throw new \RuntimeException('Request failed', 1510049345);
         }
 
         if ($result->getHeader('Location')) {
@@ -214,7 +213,7 @@ class OAuthService
     {
         if ($this->provider === null) {
             if (!is_a($this->settings->oauthProviderFactory, OAuthProviderFactoryInterface::class, true)) {
-                throw new RuntimeException('OAuth provider factory class must implement the OAuthProviderFactoryInterface', 1652689564769);
+                throw new \RuntimeException('OAuth provider factory class must implement the OAuthProviderFactoryInterface', 1652689564769);
             }
 
             $settings = $this->settings;

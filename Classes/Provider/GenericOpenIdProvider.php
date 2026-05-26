@@ -7,14 +7,13 @@ namespace Causal\Oidc\Provider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use UnexpectedValueException;
 
 class GenericOpenIdProvider extends GenericProvider
 {
     /**
      * @param AccessToken $token
      * @return mixed
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      * @throws IdentityProviderException
      */
     protected function fetchResourceOwnerDetails(AccessToken $token)
@@ -29,7 +28,7 @@ class GenericOpenIdProvider extends GenericProvider
         $jwtDecoded = base64_decode(str_replace(['_', '-'], ['/' - '+'], explode('.', $jwt)[1]));
         $resourceOwner = json_decode($jwtDecoded, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new UnexpectedValueException('The provided JWT is invalid', 1759222069);
+            throw new \UnexpectedValueException('The provided JWT is invalid', 1759222069);
         }
         return $resourceOwner;
     }

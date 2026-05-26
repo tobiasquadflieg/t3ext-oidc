@@ -6,7 +6,6 @@ namespace Causal\Oidc\Service;
 
 use Causal\Oidc\AuthenticationContext;
 use Causal\Oidc\OidcConfiguration;
-use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -82,18 +81,18 @@ class OpenIdConnectService implements LoggerAwareInterface
             || !$this->config->endpointAuthorize
             || !$this->config->endpointToken
         ) {
-            throw new InvalidArgumentException('Missing extension configuration', 1715775147);
+            throw new \InvalidArgumentException('Missing extension configuration', 1715775147);
         }
 
         $loginUrl = $request->getQueryParams()['login_url'] ?? '';
         if (!GeneralUtility::isValidUrl($loginUrl)) {
-            throw new InvalidArgumentException('Missing or invalid login_url: ' . $loginUrl, 1759845557572);
+            throw new \InvalidArgumentException('Missing or invalid login_url: ' . $loginUrl, 1759845557572);
         }
         $redirectUrl = $request->getQueryParams()['redirect_url'] ?? '';
         $hash = $request->getQueryParams()['validation_hash'] ?? '';
 
         if ($this->calculateUrlHash($loginUrl . $redirectUrl) !== $hash) {
-            throw new InvalidArgumentException('Invalid query string', 1719003567);
+            throw new \InvalidArgumentException('Invalid query string', 1719003567);
         }
 
         // Add logintype to login URL

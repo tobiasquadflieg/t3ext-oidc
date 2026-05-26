@@ -28,14 +28,11 @@ use Causal\Oidc\Frontend\FrontendSimulationInterface;
 use Causal\Oidc\Frontend\FrontendSimulationV13;
 use Causal\Oidc\Frontend\FrontendSimulationV14;
 use Causal\Oidc\OidcConfiguration;
-use InvalidArgumentException;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
-use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -48,7 +45,6 @@ use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use UnexpectedValueException;
 
 /**
  * OpenID Connect authentication service.
@@ -74,7 +70,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
      * Finds a user.
      *
      * @return array|bool
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function getUser(): bool|array
     {
@@ -228,7 +224,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
                 $this->logger->error('Could not revoke token', ['exception' => $e]);
                 return false;
             }
-            throw new RuntimeException(
+            throw new \RuntimeException(
                 'Resource owner does not have a valid sub part: ' . json_encode($resourceOwnerObject->toArray())
                     . '. Your access token has been revoked. Please try again.',
                 1490086626
@@ -499,7 +495,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
                     $postProcessor->postProcessUser($mode, $user, $info);
                     $reloadUserRecord = true;
                 } else {
-                    throw new InvalidArgumentException(
+                    throw new \InvalidArgumentException(
                         sprintf(
                             'Invalid post-processing class %s. It must implement the \\Causal\\Oidc\\Service\\ResourceOwnerHookInterface interface',
                             $className
@@ -535,7 +531,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
 
         $user = $queryResult->fetchAssociative();
         if (!is_array($user) || $user === []) {
-            throw new LogicException('The user record could not be obtained', 1643452557);
+            throw new \LogicException('The user record could not be obtained', 1643452557);
         }
         return $user;
     }
@@ -568,7 +564,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
                 if ($field !== 'usergroup' && $field !== 'parentGroup') {
                     try {
                         $out = $this->mergeSimple($oidc, $out, $field, $value);
-                    } catch (UnexpectedValueException $uve) {
+                    } catch (\UnexpectedValueException $uve) {
                         if ($reportErrors) {
                             $out['__errors'][] = $uve->getMessage();
                         }
@@ -609,7 +605,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
      * @param string $field
      * @param string $value
      * @return array Modified $typo3 array
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      * @see ContentObjectRenderer::getFieldVal
      */
     protected function mergeSimple(array $oidc, array $typo3, string $field, string $value): array

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Causal\Oidc\Frontend;
 
-use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -89,7 +88,7 @@ class FrontendSimulationV14 implements FrontendSimulationInterface
                 }
             }
         }
-        throw new InvalidArgumentException('Failed to build TypoScript');
+        throw new \InvalidArgumentException('Failed to build TypoScript');
     }
 
     public function cleanupTSFE(): void

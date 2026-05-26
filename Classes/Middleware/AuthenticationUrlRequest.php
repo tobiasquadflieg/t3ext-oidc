@@ -6,14 +6,12 @@ namespace Causal\Oidc\Middleware;
 
 use Causal\Oidc\Service\AuthenticationContextService;
 use Causal\Oidc\Service\OpenIdConnectService;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Throwable;
 use TYPO3\CMS\Core\Http\Response;
 
 class AuthenticationUrlRequest implements MiddlewareInterface, LoggerAwareInterface
@@ -38,7 +36,7 @@ class AuthenticationUrlRequest implements MiddlewareInterface, LoggerAwareInterf
                 $authContext = $this->openIdConnectService->generateAuthenticationContext($request);
                 $response = $this->openIdConnectService->getAuthorizationRedirect($authContext);
                 return $response;
-            } catch (InvalidArgumentException|Throwable $e) {
+            } catch (\InvalidArgumentException|\Throwable $e) {
                 $this->logger->alert('OIDC authentication provider error', ['exception' => $e]);
                 // config error or
                 // whatever the provider did wrong (can be connection errors)
